@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Receipt Printer</string>
+    <string name="default_printer">Default Printer</string>
+    <string name="print">Print</string>
+    <string name="party_name">party name</string>
+
+</resources>
