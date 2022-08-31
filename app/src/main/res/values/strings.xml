@@ -3,5 +3,8 @@
     <string name="default_printer">Default Printer</string>
     <string name="print">Print</string>
     <string name="party_name">party name</string>
+    <string name="rate">Rate</string>
+    <string name="enter">Enter</string>
+    <string name="quantity">Quantity</string>
 
 </resources>

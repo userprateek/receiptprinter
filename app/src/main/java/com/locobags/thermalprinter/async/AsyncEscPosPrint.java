@@ -149,7 +149,7 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
             case AsyncEscPosPrint.FINISH_SUCCESS:
                 new AlertDialog.Builder(context)
                         .setTitle("Success")
-                        .setMessage("Congratulation ! The texts are printed !")
+                        .setMessage("Print success")
                         .show();
                 break;
             case AsyncEscPosPrint.FINISH_NO_PRINTER:

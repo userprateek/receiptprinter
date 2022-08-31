@@ -1,5 +1,8 @@
 package com.locobags.thermalprinter;
 
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -45,15 +48,16 @@ public class MainActivity extends AppCompatActivity {
 
         bluetoothBrowse.setOnClickListener(view -> browseBluetoothDevice());
         bluetoothPrint.setOnClickListener(view -> {
-            printBluetooth();
-            if (storedRate != Integer.parseInt(til_rate.getEditText().getText().toString())) {
-                myEdit.putInt("rate", Integer.parseInt(til_rate.getEditText().getText().toString()));
-                myEdit.apply();
+            if (validateInput()) {
+                printBluetooth();
+                if (storedRate != Integer.parseInt(til_rate.getEditText().getText().toString())) {
+                    myEdit.putInt("rate", Integer.parseInt(til_rate.getEditText().getText().toString()));
+                    myEdit.apply();
+                }
             }
         });
         int rate = sharedPreferences.getInt("rate", 0);
-        if(rate>0)
-        {
+        if (rate > 0) {
             storedRate = rate;
             til_rate.getEditText().setText(String.valueOf(rate));
         }
@@ -136,6 +140,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean validateInput() {
+        if (partyName.getEditText().getText().toString().equals("")) {
+            makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.party_name)), LENGTH_SHORT).show();
+            return false;
+        } else if (til_quantity.getEditText().getText().toString().equals("")) {
+            makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.quantity)), LENGTH_SHORT).show();
+            return false;
+        } else if (til_rate.getEditText().getText().toString().equals("")) {
+            makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.rate)), LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     public void printBluetooth() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
@@ -185,10 +203,8 @@ public class MainActivity extends AppCompatActivity {
                         "[L]<b>" + partyName.getHint().toString() + "</b>[R]" + partyName.getEditText().getText().toString() + "\n" +
                         "[L]<b>" + til_quantity.getHint().toString() + "</b>[R]" + quantity + "\n" +
                         "[L]<b>" + til_rate.getHint().toString() + "</b>[R]" + rate + "\n" +
-                        "[L]<b>Total</b>[R]" + total + "\n" +
-                        "[L]\n"
-
-
+                        "[C]--------------------------------\n" +
+                        "[R]TOTAL  :[R]" + total + "\n"
         );
     }
 }
