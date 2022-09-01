@@ -193,8 +193,8 @@ public abstract class AsyncEscPosPrint extends AsyncTask<AsyncEscPosPrinter, Int
     }
 
     public static class PrinterStatus {
-        private AsyncEscPosPrinter asyncEscPosPrinter;
-        private int printerStatus;
+        private final AsyncEscPosPrinter asyncEscPosPrinter;
+        private final int printerStatus;
 
         public PrinterStatus (AsyncEscPosPrinter asyncEscPosPrinter, int printerStatus) {
             this.asyncEscPosPrinter = asyncEscPosPrinter;

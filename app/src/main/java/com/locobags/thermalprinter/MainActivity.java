@@ -11,7 +11,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,9 +35,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private TextInputLayout partyName, til_rate, til_quantity;
+    private TextInputLayout partyName, til_item_name, til_quantity, til_rate;
+    private LinearLayout inputRow1, inputRow2, inputRow3, inputRow4, inputRow5, addRow;
     private Button bluetoothBrowse, bluetoothPrint;
+    private AutoCompleteTextView actvItemName;
+    private TextView tvGrandTotal;
+    private String printString = "";
     private int storedRate;
+    private int visibleRow = 1;
+    int[] total = new int[5];
+    private int grandTotal = 0;
+    private static final String[] ItemTypes = new String[]{
+            "Duffle Bag", "Gym Bag", "Backpack Bag", "Other", "Other"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +56,65 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         setContentView(R.layout.activity_main);
         partyName = findViewById(R.id.til_party_name);
-        til_rate = findViewById(R.id.til_rate);
-        til_quantity = findViewById(R.id.til_item);
+
+        inputRow1 = findViewById(R.id.ll_input_row1);
+        inputRow2 = findViewById(R.id.ll_input_row2);
+        inputRow3 = findViewById(R.id.ll_input_row3);
+        inputRow4 = findViewById(R.id.ll_input_row4);
+        inputRow5 = findViewById(R.id.ll_input_row5);
+        addRow = findViewById(R.id.ll_add_row);
+        tvGrandTotal = findViewById(R.id.tv_grand_total);
+        til_item_name = inputRow1.findViewById(R.id.til_item_name);
+        actvItemName = inputRow1.findViewById(R.id.actv_item_name);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, ItemTypes);
+        int[] ids = new int[]{R.id.ll_input_row1, R.id.ll_input_row2, R.id.ll_input_row3, R.id.ll_input_row4, R.id.ll_input_row5};
+
+        actvItemName.setAdapter(adapter);
+        actvItemName.setText(ItemTypes[visibleRow - 1]);
+        til_rate = inputRow1.findViewById(R.id.til_rate);
+        til_quantity = inputRow1.findViewById(R.id.til_quantity);
         bluetoothBrowse = this.findViewById(R.id.button_bluetooth_browse);
         bluetoothPrint = findViewById(R.id.button_bluetooth);
-
         bluetoothBrowse.setOnClickListener(view -> browseBluetoothDevice());
         bluetoothPrint.setOnClickListener(view -> {
             if (validateInput()) {
+                if (til_rate.getEditText().getText().toString() != "") {
+                    if (storedRate != Integer.parseInt(til_rate.getEditText().getText().toString())) {
+                        myEdit.putInt("rate", Integer.parseInt(til_rate.getEditText().getText().toString()));
+                        myEdit.apply();
+                    }
+                }
                 printBluetooth();
-                if (storedRate != Integer.parseInt(til_rate.getEditText().getText().toString())) {
-                    myEdit.putInt("rate", Integer.parseInt(til_rate.getEditText().getText().toString()));
-                    myEdit.apply();
+            }
+        });
+        addRow.setOnClickListener(view -> {
+            visibleRow++;
+            actvItemName = findViewById(ids[visibleRow - 1]).findViewById(R.id.actv_item_name);
+            actvItemName.setAdapter(adapter);
+            actvItemName.setText(ItemTypes[visibleRow - 1]);
+            switch (visibleRow) {
+                case 2: {
+                    inputRow2.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case 3: {
+                    inputRow3.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case 4: {
+                    inputRow4.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case 5: {
+                    inputRow5.setVisibility(View.VISIBLE);
+                    addRow.setVisibility(View.GONE);
+                    break;
+                }
+                default: {
+                    addRow.setVisibility(View.GONE);
+                    break;
                 }
             }
         });
@@ -141,19 +203,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean validateInput() {
-        if (partyName.getEditText().getText().toString().equals("")) {
-            makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.party_name)), LENGTH_SHORT).show();
-            return false;
-        } else if (til_quantity.getEditText().getText().toString().equals("")) {
-            makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.quantity)), LENGTH_SHORT).show();
-            return false;
-        } else if (til_rate.getEditText().getText().toString().equals("")) {
-            makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.rate)), LENGTH_SHORT).show();
-            return false;
+        int[] ids = new int[]{R.id.ll_input_row1, R.id.ll_input_row2, R.id.ll_input_row3, R.id.ll_input_row4, R.id.ll_input_row5};
+        TextInputLayout til_quantity, til_rate;
+        for (int i = 0; i < visibleRow; i++) {
+            til_quantity = findViewById(ids[i]).findViewById(R.id.til_quantity);
+            til_rate = findViewById(ids[i]).findViewById(R.id.til_rate);
+            if (partyName.getEditText().getText().toString().equals("")) {
+                makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.party_name)), LENGTH_SHORT).show();
+                return false;
+            } else if (til_quantity.getEditText().getText().toString().equals("")) {
+                makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.quantity)), LENGTH_SHORT).show();
+                return false;
+            } else if (til_rate.getEditText().getText().toString().equals("")) {
+                makeText(this, String.format("%s %s", getString(R.string.enter), getString(R.string.rate)), LENGTH_SHORT).show();
+                return false;
+            }
         }
+
         return true;
     }
 
+    private void calculateGrandTotal() {
+        int[] ids = new int[]{R.id.ll_input_row1, R.id.ll_input_row2, R.id.ll_input_row3, R.id.ll_input_row4, R.id.ll_input_row5};
+        TextInputLayout til_item_name, til_quantity, til_rate;
+        for (int i = 0; i < visibleRow; i++) {
+            til_quantity = findViewById(ids[i]).findViewById(R.id.til_quantity);
+            til_rate = findViewById(ids[i]).findViewById(R.id.til_rate);
+            til_item_name = findViewById(ids[i]).findViewById(R.id.til_item_name);
+
+            total[i] += Integer.parseInt(til_quantity.getEditText().getText().toString()) * Integer.parseInt(til_rate.getEditText().getText().toString());
+            grandTotal += total[i];
+            printString += "[L]<b>" + til_item_name.getEditText().getText() + "</b>[R] " + Integer.parseInt(til_quantity.getEditText().getText().toString()) + " [R] " + Integer.parseInt(til_rate.getEditText().getText().toString()) + "[R] " + total[i] + " \n";
+        }
+    }
+    private void clearFields() {
+        int[] ids = new int[]{R.id.ll_input_row1, R.id.ll_input_row2, R.id.ll_input_row3, R.id.ll_input_row4, R.id.ll_input_row5};
+        TextInputLayout til_quantity;
+        for (int i = 0; i < 5; i++) {
+            til_quantity = findViewById(ids[i]).findViewById(R.id.til_quantity);
+            til_quantity.getEditText().setText("");
+            if (i != 0) {
+                findViewById(ids[i]).setVisibility(View.GONE);
+            }
+            total[i]=0;
+        }
+        visibleRow = 1;
+        grandTotal = 0;
+        printString = "";
+    }
     public void printBluetooth() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, MainActivity.PERMISSION_BLUETOOTH);
@@ -174,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(AsyncEscPosPrinter asyncEscPosPrinter) {
+                            clearFields();
                             Log.i("Async.OnPrintFinished", "AsyncEscPosPrint.OnPrintFinished : Print is finished !");
                         }
                     }
@@ -191,20 +289,22 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SimpleDateFormat")
     public AsyncEscPosPrinter getAsyncEscPosPrinter(DeviceConnection printerConnection) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss");
-        int rate = Integer.parseInt(til_rate.getEditText().getText().toString());
-        int quantity = Integer.parseInt(til_quantity.getEditText().getText().toString());
-        int total = rate * quantity;
+        calculateGrandTotal();
         AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 48f, 32);
+
         return printer.addTextToPrint(
                 "[C]<u><font size='big'>LOCOBAGS</font></u>\n" +
                         "[L]\n" +
+//                "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, this.getApplicationContext().getResources().getDrawableForDensity(R.drawable.logo_black_white, DisplayMetrics.DENSITY_MEDIUM)) + "</img>\n" +
+//                        "[L]\n"+
                         "[C]<u type='double'>" + format.format(new Date()) + "</u>\n" +
                         "[C]================================\n" +
-                        "[L]<b>" + partyName.getHint().toString() + "</b>[R]" + partyName.getEditText().getText().toString() + "\n" +
-                        "[L]<b>" + til_quantity.getHint().toString() + "</b>[R]" + quantity + "\n" +
-                        "[L]<b>" + til_rate.getHint().toString() + "</b>[R]" + rate + "\n" +
+                        "[C]<u type='double'>" + partyName.getEditText().getText().toString() + "</u>\n" +
+                        "[L]\n" +
+                        "[L]<b>" + til_item_name.getHint().toString() + "</b>[R]  Qty [R] Rate [R] Total \n" +
+                        printString +
                         "[C]--------------------------------\n" +
-                        "[R]TOTAL  :[R]" + total + "\n"
+                        "[C]Grand Total : ₹" + grandTotal + "\n"
         );
     }
 }

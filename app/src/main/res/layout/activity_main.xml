@@ -23,7 +23,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_medium"
+                android:layout_margin="@dimen/padding_x_small"
                 android:hint="@string/party_name"
                 app:boxCornerRadiusBottomEnd="@dimen/padding_medium"
                 app:boxCornerRadiusBottomStart="@dimen/padding_medium"
@@ -38,49 +38,57 @@
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_item"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <include
+                android:id="@+id/ll_input_row1"
+                layout="@layout/receipt_item_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/ll_input_row2"
+                layout="@layout/receipt_item_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/ll_input_row3"
+                layout="@layout/receipt_item_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/ll_input_row4"
+                layout="@layout/receipt_item_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/ll_input_row5"
+                layout="@layout/receipt_item_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_add_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding_medium"
-                android:hint="quantity"
-                app:boxCornerRadiusBottomEnd="@dimen/padding_medium"
-                app:boxCornerRadiusBottomStart="@dimen/padding_medium"
-                app:boxCornerRadiusTopEnd="@dimen/padding_medium"
-                app:boxCornerRadiusTopStart="@dimen/padding_medium">
+                android:gravity="center">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_rate"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_medium"
-                android:hint="rate"
-                app:boxCornerRadiusBottomEnd="@dimen/padding_medium"
-                app:boxCornerRadiusBottomStart="@dimen/padding_medium"
-                app:boxCornerRadiusTopEnd="@dimen/padding_medium"
-                app:boxCornerRadiusTopStart="@dimen/padding_medium">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <ImageButton
+                    android:clickable="false"
+                    android:id="@+id/ic_add"
+                    android:layout_width="34dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_add" />
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_grand_total"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding_medium"
@@ -102,21 +110,20 @@
             android:id="@+id/button_bluetooth_browse"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_x_small"
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:text="@string/default_printer"
-            android:textColor="@color/mdtd_white"
-            android:layout_margin="@dimen/padding_xsmall"
-            />
+            android:textColor="@color/mdtd_white" />
 
         <Button
             android:id="@+id/button_bluetooth"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_x_small"
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:text="@string/print"
-            android:layout_margin="@dimen/padding_xsmall"
             android:textColor="@color/mdtd_white" />
     </LinearLayout>
 </RelativeLayout>
