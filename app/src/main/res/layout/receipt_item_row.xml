@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="9">
+        android:weightSum="10">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_item_name"
@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding_x_small"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:hint="@string/item"
             app:boxCornerRadiusBottomEnd="@dimen/padding_medium"
             app:boxCornerRadiusBottomStart="@dimen/padding_medium"

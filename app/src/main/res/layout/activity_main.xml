@@ -72,19 +72,68 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
+            <include
+                android:id="@+id/ll_packing_row"
+                layout="@layout/receipt_item_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_due_payment"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_x_small"
+                android:hint="Due Payment"
+                app:boxCornerRadiusBottomEnd="@dimen/padding_medium"
+                app:boxCornerRadiusBottomStart="@dimen/padding_medium"
+                app:boxCornerRadiusTopEnd="@dimen/padding_medium"
+                app:boxCornerRadiusTopStart="@dimen/padding_medium">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_due_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_paid_amount"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_x_small"
+                android:hint="Paid Amount"
+                app:boxCornerRadiusBottomEnd="@dimen/padding_medium"
+                app:boxCornerRadiusBottomStart="@dimen/padding_medium"
+                app:boxCornerRadiusTopEnd="@dimen/padding_medium"
+                app:boxCornerRadiusTopStart="@dimen/padding_medium">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_paid_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:id="@+id/ll_add_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding_medium"
+                android:background="@color/light_grey"
                 android:gravity="center">
 
                 <ImageButton
-                    android:clickable="false"
                     android:id="@+id/ic_add"
-                    android:layout_width="34dp"
+                    android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/ic_add" />
+                    android:background="@drawable/ic_add"
+                    android:clickable="false" />
             </LinearLayout>
 
             <TextView
